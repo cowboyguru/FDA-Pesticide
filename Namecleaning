@@ -34,3 +34,5 @@ for(n in 1:max(rawnew$Food.No.)){
   x <- append(x, length(table(rawnew$Food.No.[rawnew$Food.Name == rawnew$Food.Name[n]])))
 }
 table(x)
+
+EDITEDITEDIT
