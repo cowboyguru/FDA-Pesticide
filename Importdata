@@ -1,0 +1,125 @@
+library(plyr)
+library(stringr)
+setwd("C:/Users/Jacob/Documents/Pesticides")
+
+whiteTest <- function(i){
+  paste(c("start", i, "finish"), collapse = ":")
+}
+
+stripWhite <- function(x) {
+  unlist(lapply(x, function(i){sub("\\s+$", "", i)}))
+}
+
+NAstuff <- function(x){
+  unlist(lapply(x, function(i){
+    if (is.na(i))
+      NA
+    else if (is.null(i))
+      NA
+    else if (i == "")
+      NA
+    else if (i == "NULL")
+      NA
+    else 
+      i }))
+}
+
+inRead <- function(year){
+  fileName <- paste("RawData/Pesticides ", year, ".txt", sep = "")
+  df <- read.delim2(fileName, stringsAsFactors = F, strip.white = T)
+  df$Conc <- NAstuff(df$Conc)
+  df$Unit <- NAstuff(df$Unit)
+  
+  df$Food.Name <- stripWhite(df$Food.Name)
+  df$Residue <- stripWhite(df$Residue)
+  df$Method <- stripWhite(df$Method)
+  
+  df$year <- as.factor(year)
+  
+  df
+}
+
+ReadAllData <- function(){
+  # 1991
+  df <- inRead("1991")
+  mer91 <- df
+  
+  # 1992
+  df <- inRead("1992")
+  mer92 <- rbind.fill(mer91, df)
+  rm(mer91)
+  
+  # 1993
+  df <- inRead("1993")
+  mer93 <- rbind.fill(mer92, df)
+  rm(mer92)
+  
+  # 1994
+  df <- inRead("1994")
+  mer94 <- rbind.fill(mer93, df)
+  rm(mer93)
+  
+  # 1995
+  df <- inRead("1995")
+  mer95 <- rbind.fill(mer94, df)
+  rm(mer94)
+  
+  # 1996
+  df <- inRead("1996")
+  mer96 <- rbind.fill(mer95, df)
+  rm(mer95)
+  
+  # 1997
+  df <- inRead("1997")
+  mer97 <- rbind.fill(mer96, df)
+  rm(mer96)
+  
+  # 1998
+  df <- inRead("1998")
+  mer98 <- rbind.fill(mer97, df)
+  rm(mer97)
+  
+  # 1999
+  df <- inRead("1999")
+  mer99 <- rbind.fill(mer98, df)
+  rm(mer98)
+  
+  # 2000
+  df <- inRead("2000")
+  mer00 <- rbind.fill(mer99, df)
+  rm(mer99)
+  
+  # 2001
+  df <- inRead("2001")
+  mer01 <- rbind.fill(mer00, df)
+  rm(mer00)
+  
+  # 2002
+  df <- inRead("2002")
+  mer02 <- rbind.fill(mer01, df)
+  rm(mer01)
+  
+  # 2003 blanks in conc and Unit!!!
+  df <- inRead("2003")
+  mer03 <- rbind.fill(mer02, df)
+  rm(mer02)
+  
+  # 2004
+  # strip white space from food name
+  df <- inRead("2004")
+  mer04 <- rbind.fill(mer03, df)
+  rm(mer03)
+  
+  # 2005
+  Pest.2005 <- inRead("2005")
+  mer05 <- rbind.fill(mer04, df)
+  rm(mer04)
+  
+  mer05
+}
+
+
+m05 <- ReadAllData()
+
+Pest91_02 <- m05[1:56542,]
+Pest03_04 <- m05[56543:length(m05$year),]
