@@ -20,6 +20,28 @@ length(table(rawold$Food.Name)) # 298
 length(table(rawnew$Food.Name)) # 295
 length(table(rawnew$Food.No.))  # 286
 
+################################## Check degenerate name variables (2/2/16) ##########################
+
+
+numberofnames <- function(x){
+  names <-ifelse(length(table(rawnew$Food.Name[rawnew$Food.No.== x])) >= 2, yes = T ,no = F  )
+  return(names)
+}
+
+
+numofnames <- sapply(X = c(1:max(rawnew$Food.No.)), FUN = numberofnames )
+table(numofnames) #FALSE: 719   TRUE: 12
+foodno <- c(which(numofnames, arr.ind = T)) # Index of >= 2 names per Food.No
+
+# extract names 
+
+tableofnames <- function(x){
+  nametables <- data.frame(table(rawnew$Food.Name[rawnew$Food.No.== x]))
+  return(nametables)
+}
+
+duplicatenames <- lapply(foodno, FUN = tableofnames ) #final object, output saved in txt file
+
 ### Food Names Cleanup
 
 for(i in 1:max(rawnew$Food.No.)){
@@ -35,4 +57,4 @@ for(n in 1:max(rawnew$Food.No.)){
 }
 table(x)
 
-EDITEDITEDIT
+
