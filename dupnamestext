@@ -1,0 +1,61 @@
+############################## The Duplicate Name Variables ############################################
+
+[[1]]
+Var1 Freq
+1   Beef roast, chuck, oven-roasted   16
+2 Beef, ground, regular, pan-cooked   40
+
+[[2]]
+Var1 Freq
+1 Pork sausage (link/patty), oven-cooked   30
+2 Pork sausage, (link/patty) oven-cooked   20
+
+[[3]]
+Var1 Freq
+1 Squash, winter (Hubbard or acorn), fresh/frozen, boiled   46
+2    Squash, winter (Hubbard/acorn), fresh/frozen, boiled   58
+
+[[4]]
+Var1 Freq
+1 Cream substitute, non-dairy, liquid/frozen   10
+2 Cream substitute, non-diary, liquid/frozen   16
+
+[[5]]
+Var1 Freq
+1 BF, Infant formula, milk-based, high iron, RTF   14
+2     Infant formula, milk-based, high iron, RTF   24
+
+[[6]]
+Var1 Freq
+1 BF, Infant formula, milk-based, low iron, RTF   22
+2     Infant formula, milk-based, low iron, RTF   24
+
+[[7]]
+Var1 Freq
+1 BF, turkey and  rice   52
+2  BF, turkey and rice   29
+
+[[8]]
+Var1 Freq
+1       BF, custard/pudding   19
+2 BF, fruit dessert/pudding   38
+
+[[9]]
+Var1 Freq
+1 BF, cereal, rice w/apples, dry, prep w/ water   64
+2          BF, cereal, rice, dry, prep w/ water   35
+
+[[10]]
+Var1 Freq
+1 Chicken leg, fried, fast-food  (w/ skin)   18
+2  Chicken leg, fried, fast-food (w/ skin)   37
+
+[[11]]
+Var1 Freq
+1   Potato, mashed, prepared from fresh   44
+2 Potatoes, mashed, prepared from fresh   21
+
+[[12]]
+Var1 Freq
+1 Cake, white w/ icing (formerly yellow cake)   16
+2                       Cake, yellow w/ icing   22
