@@ -1,0 +1,68 @@
+### Initialize
+rm(list=ls())
+options(stringsAsFactors=F)
+setwd("C:/Users/Jacob/Documents/Pesticides")
+
+### Read file 
+
+raw <- as.data.frame(read.csv("Pestisides91-05.csv", header=T))
+rawold <- raw[ 1:(match(x = "2003", table = raw$year)-1),]
+rawnew <- raw[ match(x = "2003", table = raw$year):length(raw$year),]
+
+
+### View Food Names
+
+#early half
+length(table(rawold$Food.No.))  # 289
+length(table(rawold$Food.Name)) # 298
+
+#later half
+length(table(rawnew$Food.Name)) # 295
+length(table(rawnew$Food.No.))  # 286
+
+length(table(raw$Food.Name)) # 593
+length(table(raw$Food.No.))  # 357
+
+############# Check degenerate name variables (2/2/16) ##############
+
+df <- raw
+
+# Viewing numbers that are assigned to the same name
+numberofnums <- function(x){
+  numbers <-ifelse(
+    length(table(df$Food.No.[df$Food.Name== names(table(df$Food.Name))[x]])) >= 2,
+    yes = T ,no = F  )
+  return(numbers)
+}
+
+numofnum <- sapply(X = c(1:length(table(df$Food.Name))), FUN = numberofnums)
+table(numofnum) # 4 true
+foodnam <- c(which(numofnum, arr.ind = T))
+
+tableofnums <- function(x){
+  numtables <- data.frame(table(df$Food.No.[
+    df$Food.Name== names(table(df$Food.Name))[x]]))
+  return(numtables)
+}
+
+# Viewing names that are assigned to one number
+numberofnames <- function(x){
+  names <-ifelse(length(table(df$Food.Name[df$Food.No.== x])) >= 2, yes = T ,no = F  )
+  return(names)
+}
+
+numofnames <- sapply(X = c(1:max(df$Food.No.)), FUN = numberofnames )
+table(numofnames) #FALSE: 719   TRUE: 12
+foodno <- c(which(numofnames, arr.ind = T)) # Index of >= 2 names per Food.No
+
+# extract names 
+tableofnames <- function(x){
+  nametables <- data.frame(table(df$Food.Name[df$Food.No.== x]))
+  return(nametables)
+}
+
+# lists of duplicate names and numbers
+duplicatenames <- lapply(foodno, FUN = tableofnames)
+duplicatenums <- lapply(foodnam, FUN = tableofnums)
+
+
