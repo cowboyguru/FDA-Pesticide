@@ -111,7 +111,7 @@ ReadAllData <- function(){
   rm(mer03)
   
   # 2005
-  Pest.2005 <- inRead("2005")
+  df <- inRead("2005")
   mer05 <- rbind.fill(mer04, df)
   rm(mer04)
   
@@ -123,3 +123,28 @@ m05 <- ReadAllData()
 
 Pest91_02 <- m05[1:56542,]
 Pest03_04 <- m05[56543:length(m05$year),]
+
+write.csv(raw, "Pestisides91-05.csv", row.names = F)
+
+### Food Names Cleanup
+for(i in 1:max(df$Food.No.)){
+  if (!(length(table(df$Food.Name[df$Food.No.== i])) == 0) )
+    
+    df$Food.Name[df$Food.No.== i] <- df$Food.Name[df$Food.No.== i][1]
+}
+
+for(i in 1:length(table(df$Food.Name))){
+  if (!(length(table(df$Food.No.[df$Food.Name == 
+                                 names(table(df$Food.Name)[i])])) == 0) )
+    
+    df$Food.No.[df$Food.Name == names(table(df$Food.Name)[i])] <- 
+      df$Food.No.[df$Food.Name == names(table(df$Food.Name)[i]) ][1]
+}
+
+
+length(table(df$Food.Name)) # 357
+length(table(df$Food.No.))  # 357
+
+
+write.csv(df, "MasterPest91-05.csv", row.names = F)
+
