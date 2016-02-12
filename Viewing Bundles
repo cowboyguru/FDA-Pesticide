@@ -10,7 +10,7 @@ library(wordcloud)
 toSpace <- content_transformer(function (x , pattern ) gsub(pattern, " ", x))
 
 adj <- read.csv("adj.csv", header = T)
-adj <- adj$x
+adj <- adj$Adjectives
 
 Pest <- read.csv("MasterPest91-05.csv")
 
