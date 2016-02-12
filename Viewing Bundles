@@ -7,21 +7,31 @@ library(tm)
 library(SnowballC)
 library(wordcloud)
 
+toSpace <- content_transformer(function (x , pattern ) gsub(pattern, " ", x))
+
+adj <- read.csv("adj.csv", header = T)
+adj <- adj$x
+
 Pest <- read.csv("MasterPest91-05.csv")
 
 temp <- paste(Pest$Food.Name, sep = " ", collapse = " ")
-temp <- gsub("[^[:alnum:][:space:]']", "", temp)
 
-# requires a folder in working directory called Rcloud
 write.table(temp, "Rcloud/temp.txt")
 
-# cleans data
 FNames <- Corpus(DirSource("Rcloud/"))
 FNames <- tm_map(FNames, stripWhitespace)
 FNames <- tm_map(FNames, tolower)
 FNames <- tm_map(FNames, removeWords, stopwords("english"))
 FNames <- tm_map(FNames, stemDocument)
 FNames <- tm_map(FNames, PlainTextDocument)
+FNames <- tm_map(FNames, toSpace, "/")
+FNames <- tm_map(FNames, toSpace, ",")
+FNames <- tm_map(FNames, toSpace, "-")
+FNames <- tm_map(FNames, toSpace, ")")
+FNames <- tm_map(FNames, toSpace, '\\(')
 
-# Creates word cloud
+noWords <- adj
+FNames <- tm_map(FNames, removeWords, noWords)
+
 wordcloud(FNames, scale=c(5,0.5), max.words=100, random.order=FALSE, rot.per=0.35, use.r.layout=FALSE, colors=brewer.pal(8, "Dark2"))
+
