@@ -1,7 +1,7 @@
 ### Initialize
 rm(list=ls())
 options(stringsAsFactors=F)
-setwd("C:/Users/Jacob/Documents/Pesticides")
+# setwd (need "adj.csv" and "MasterPest91-05.csv" files in wd, also dir "Rcloud" in wd)
 
 library(tm)
 library(SnowballC)
