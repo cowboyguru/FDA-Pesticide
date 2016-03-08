@@ -1,0 +1,39 @@
+### Initialize
+rm(list=ls())
+options(stringsAsFactors=F)
+setwd("~/CSUEB Materials/FDA Research")
+library(dplyr)
+library(ggplot2)
+
+### Read files
+
+master <- as.data.frame(read.csv("MasterPest91-05.csv", header=T))
+
+# new col for Market Basket
+master <- mutate(master, Market_Basket = (substr(master$MB, start = 6, stop = 6)))
+
+### The Pesticides
+
+length(table(master$Residue)) #313 - 2 = 311 unique residues observed
+sort(table(master$Residue),decreasing = T)[1:10]
+
+### Look at DDE only 
+
+pesticide <- names(sort(table(master$Residue),decreasing = T))[9] # SPECIFY PESTICIDE HERE
+DDE <- filter(master, Residue == pesticide) %>% arrange(Food.Name) %>% group_by(Food.Name) %>% summarise(count = n()) %>% arrange(desc(count))
+food <- DDE[[1]][3] #American Cheese, most DDE. SPECIFY FOOD HERE (FIRST SPECIFY PESTICIDE)
+
+# Table of Units   
+
+filter(master, Food.Name == food, Residue == pesticide) %>% group_by(Unit) %>% summarise(count = n())
+
+# Table of Trace
+
+filter(master, Food.Name == food, Residue == pesticide) %>% group_by(Trace) %>% summarise(count = n())
+
+# Line Graph of avg concentration (M only) x year (SPECIFY UNITS HERE)
+
+timesrs <- filter(master, Food.Name == food, Residue == pesticide, Unit == "B") %>% group_by(year, Market_Basket) %>% summarise(mean(Conc))
+
+ggplot(timesrs, aes(x = as.factor(timesrs$year), y = timesrs$`mean(Conc)`, color = Market_Basket, group = Market_Basket)) + geom_line(size = 1) +
+  labs(x = "Year", y = paste("Concentration (Molarity) of",pesticide), title = paste("Concentration of",pesticide, "in", food, "Over Time")) 
