@@ -157,7 +157,13 @@ market <- function(basket){
 
 master <- mutate(master, Market_Basket = (substr(master$MB, start = 6, stop = 6)))
 
+as.factor(master$Residue) %>% unique() %>% length() # 313
+
 master$Market_Basket <- sapply(master$Market_Basket, market)
+
+as.factor(master$Residue) %>% unique() %>% length() # 215 change of almost 100
+
+master$Residue = sapply(master$Residue, tolower)
 
 write.csv(df, "MasterPest91-05.csv", row.names = F)
 
