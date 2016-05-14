@@ -146,5 +146,18 @@ length(table(df$Food.Name)) # 357
 length(table(df$Food.No.))  # 357
 
 
+market <- function(basket){
+  if (is.na(basket)) basket
+  else if (basket == 1) basket = "North Central"
+  else if (basket == 2) basket = "West"
+  else if (basket == 3) basket = "South"
+  else if (basket == 4) basket = "North East"
+  basket
+}
+
+master <- mutate(master, Market_Basket = (substr(master$MB, start = 6, stop = 6)))
+
+master$Market_Basket <- sapply(master$Market_Basket, market)
+
 write.csv(df, "MasterPest91-05.csv", row.names = F)
 
